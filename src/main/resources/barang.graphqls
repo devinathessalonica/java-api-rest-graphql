@@ -1,0 +1,17 @@
+type Barang {
+	id: ID!
+	nama: String!
+	merk: Merk
+}
+
+extend type Query {
+	findAllBarangs: [Barang]!
+	barangsById(id:String!): Barang
+	countBarangs: Long!
+}
+
+extend type Mutation {
+	createBarang(nama: String!,merk: ID!): Barang!
+	updateBarang(id: ID!, nama: String): Barang!
+	deleteBarang(id: ID!): Boolean
+}

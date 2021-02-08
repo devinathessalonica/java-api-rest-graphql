@@ -1,0 +1,16 @@
+type Merk {
+	id: ID!
+	name: String!
+}
+
+# Root
+type Query {
+	findAllMerks: [Merk]!
+	merksById(id:Int): Merk
+	countMerks: Long!
+}
+
+# Root
+type Mutation {
+	createMerk(name: String!): Merk!
+}
