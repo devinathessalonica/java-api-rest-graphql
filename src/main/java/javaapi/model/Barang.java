@@ -1,10 +1,11 @@
 package javaapi.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "barang")
-public class Barang {
+public class Barang implements Serializable{
 
 	@Id
 	@Column(name = "id")
@@ -24,11 +25,10 @@ public class Barang {
 
 	}
 
-	public Barang(String id, String nama, int status, Merk merk) {
+	public Barang(String id, String nama, int status) {
 		this.id = id;
 		this.nama = nama;
 		this.status = status;
-		this.merk = merk;
 	}
 
 	public String getId() {

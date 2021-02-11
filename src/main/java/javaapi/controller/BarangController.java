@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import javaapi.model.Barang;
+import javaapi.repository.BarangCacheRepository;
 import javaapi.repository.BarangRepository;
 
 
@@ -31,6 +32,8 @@ public class BarangController {
 
   @Autowired
   BarangRepository barangRepository;
+  @Autowired
+  BarangCacheRepository itemRepo;
 
 
   @GetMapping("/barangs")
@@ -38,11 +41,15 @@ public class BarangController {
   public ResponseEntity<List<Barang>> getAllBarangs(@RequestParam(required = false) String nama) {
     try {
       List<Barang> barangs = new ArrayList<Barang>();
-
-      if (nama == null)
-        barangRepository.findAll().forEach(barangs::add);
-      else
-        barangRepository.findByNamaContaining(nama).forEach(barangs::add);
+       barangs =  itemRepo.getAllBarangs();
+       System.out.println(barangs);
+       if(barangs.isEmpty()){
+          if (nama == null)
+          barangRepository.findAll().forEach(barangs::add);
+        else
+          barangRepository.findByNamaContaining(nama).forEach(barangs::add);
+       }
+      
 
       if (barangs.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -67,13 +74,14 @@ public class BarangController {
 
   @PostMapping("/barangs")
   public ResponseEntity<Barang> createBarang(@RequestBody Barang barang) {
-    try {
+    // try {
       Barang _barang = barangRepository
-          .save(new Barang(barang.getId(),barang.getNama(), barang.getStatus(), barang.getMerk()));
+          .save(new Barang(barang.getId(),barang.getNama(), barang.getStatus()));
+          itemRepo.addBarang(barang);
       return new ResponseEntity<>(_barang, HttpStatus.CREATED);
-    } catch (Exception e) {
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    // } catch (Exception e) {
+    //   return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
   }
 
   @PutMapping("/barangs/{id}")
