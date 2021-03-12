@@ -1,11 +1,18 @@
 package javaapi.model;
 
 import javax.persistence.*;
+
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = "barang")
 public class Barang implements Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id")
